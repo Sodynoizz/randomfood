@@ -5,6 +5,10 @@ import { useAuth, TUCMCLogin } from "tucmc-auth";
 
 export default function Home() {
   const [info, setInfo] = useState({});
+  const [foodname, setFoodname] = useState("");
+  const [shopname, setShopname] = useState("");
+  const [shopplace, setShopplace] = useState("");
+  const [price, setPrice] = useState("");
   const [foodtype, setFoodtype] = useState("all");
   const [place, setPlace] = useState("all");
   const [error, setError] = useState(false);
@@ -28,6 +32,10 @@ export default function Home() {
     try {
       const response = await axios.request(config);
       setInfo(response.data);
+      setFoodname(response.data.foodname);
+      setShopname(response.data.shopname);
+      setShopplace(response.data.place);
+      setPrice(response.data.price);
       setGenerate(true);
       setError(false);
       console.log(response.data);
@@ -162,16 +170,16 @@ export default function Home() {
 
       <div className={generate ? "block" : "hidden"}>
         <p className=" flex w-full justify-center my-5">
-          เมนูอาหาร : {(info as any).foodname}
+          เมนูอาหาร : {foodname}
         </p>
         <p className=" flex w-full justify-center my-5">
-          ร้านค้า : {(info as any).shopname}
+          ร้านค้า : {shopname}
         </p>
         <p className=" flex w-full justify-center my-5">
-          สถานที่ : {(info as any).place}
+          สถานที่ : {shopplace}
         </p>
         <p className=" flex w-full justify-center my-5">
-          ราคา(บาท) : {(info as any).price}
+          ราคา(บาท) : {price}
         </p>
       </div>
     </div>

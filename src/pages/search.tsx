@@ -1,11 +1,10 @@
 import axios from "axios";
 import React from "react";
-import { useState } from "react";
+import { useState,useEffect } from "react";
 
 export default function Search() {
-  const [searchQuery, setSearchQuery] = useState("");
   const [input, setInput] = useState("");
-  const [result, setResult] = useState();
+  const [results, setResults] = useState([]);
 
   function handleinput(event: any) {
     setInput(event.target.value);
@@ -23,15 +22,32 @@ export default function Search() {
     }),
   };
 
+  useEffect(() => {  
+    makeRequest()
+  }, []);
+
   async function makeRequest() {
     try {
       const response = await axios.request(config);
       console.log(response.data);
-      setResult(response.data);
+      setResults(response.data);
     } catch (error) {
       console.log(error);
     }
   }
+
+  const arrayResult = results.map((result) => 
+  <div key={result['id']} className=" m-5">
+  <p>id : {result['id']}</p>
+  <p>เมนูอาหาร : {result['foodname']}</p>
+  <p>ประเภทอาหาร : {result['foodtype']}</p>
+  <span>ชื่อร้าน : {result['shopname']} </span>
+  <span>สถานที่ : {result['place']}</span>
+  <p>ราคา(บาท) : {result['price']}</p>
+  <p>note : {result['note']}</p>
+  <p>images : {result['images']}</p>
+  </div> )
+
 
   return (
     <>
@@ -55,9 +71,9 @@ export default function Search() {
           search
         </button>
       </div>
-      <div>
-        <p>{(result as any).foodname}</p>
-      </div>
+      <div className=" grid grid-cols-3 place-items-center">
+        {arrayResult}
+      </div>  
     </>
   );
 }
